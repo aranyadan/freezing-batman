@@ -47,6 +47,7 @@ private:
 
     // Image Processing Functions
     cv::Mat preprocessing(cv::Mat &image); // Image enhancement functions
+    cv::Mat shadowRemoval(cv::Mat &image); //ShadowRemoval applied
     cv::Mat grassRemoval(cv::Mat &image); // Apply grass removal and return the image with grass removed
     cv::Mat obstacleRemoval(cv::Mat &image); // Remove Obstacles and return the image with obstacles removed
     cv::Mat getLaneBinary(cv::Mat &image); // Detect lanes and return a binary image with Lanes only

@@ -76,8 +76,12 @@ add_library(laneDetector
                      src/detector/inversePerspectiveTransform.cpp
                      src/detector/laneDetector.cpp
                      src/detector/obstacleRemoval.cpp
-                     src/detector/preprocessing.cpp)
+                     src/detector/preprocessing.cpp
+		     src/detector/shadowRemoval.cpp)
 target_link_libraries(laneDetector svm ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 
 add_executable(lane_detector src/laneDetectorNode.cpp)
 target_link_libraries(lane_detector laneDetector agv_framework m ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+
+
+

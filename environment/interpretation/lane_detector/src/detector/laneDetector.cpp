@@ -9,7 +9,7 @@ LaneDetector::LaneDetector(ros::NodeHandle& node_handle) {
     kernel_size = 8;
     svm = new SVM();
     svm->init(kernel_size * kernel_size * 3);
-    std::string model_path = "/home/kinoder/catkin_ws/src/freezing-batman/environment/interpretation/lane_detector/data/"+training_data_file + ".model";
+    std::string model_path = "/home/aranya/catkin_ws/src/freezing-batman/environment/interpretation/lane_detector/data/"+training_data_file + ".model";
     svm->loadModel(model_path.c_str());
     setupComms();
 
@@ -46,6 +46,11 @@ void LaneDetector::interpret() {
    if (time_functions > 0) {
         gettimeofday(&tval_before, NULL);
     }
+
+
+    result=shadowRemoval(result);
+    //cv::imshow("shadowRemoved",result);
+
     result = grassRemoval(result);
     if (time_functions > 0) {
         gettimeofday(&tval_after, NULL);
@@ -77,7 +82,7 @@ void LaneDetector::interpret() {
         cv::waitKey(wait_time);
     }
 
-   /* if (time_functions > 0) {
+    if (time_functions > 0) {
         gettimeofday(&tval_before, NULL);
     }
     result = obstacleRemoval(result);
@@ -93,7 +98,7 @@ void LaneDetector::interpret() {
         cv::imshow(obstacle_removal_output_window, result);
         cv::waitKey(wait_time);
     }
-*/
+
     if (time_functions > 0) {
         gettimeofday(&tval_before, NULL);
     }
@@ -169,7 +174,8 @@ void LaneDetector::loadParams(ros::NodeHandle& node_handle) {
     ipt_offsets_file = std::string("ipt_offsets1.txt");
     map_size = 1000;
     published_topic_name = std::string("/lane_detector0/lanes");
-    subscribed_topic_name = std::string("/logitech_camera1/image");
+    //subscribed_topic_name = std::string("/logitech_camera1/image");
+    subscribed_topic_name = std::string("/sensors/camera/1");
     time_functions = 0;
     training_data_file = std::string("Test4");
     wait_time = 10;
