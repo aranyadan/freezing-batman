@@ -91,7 +91,13 @@ int main(int argc, char** argv) {
         }
     }
     printf("Sample Size: %d\n", size_sample);
-
+    cv::vector<cv::Mat> channels;
+    cv::Mat img_hist_equalized;
+    cvtColor(img, img_hist_equalized, CV_BGR2YCrCb);
+    cv::split(img_hist_equalized,channels);
+    cv::equalizeHist(channels[0], channels[0]);
+    cv::merge(channels,img_hist_equalized);
+    cvtColor(img_hist_equalized, img, CV_YCrCb2BGR);
     temp = img.clone();
     cvtColor(temp,temp,CV_BGR2HSV);
     cvtColor(img,img,CV_BGR2HSV);
@@ -102,6 +108,7 @@ int main(int argc, char** argv) {
     cv::namedWindow("Original Image",CV_WINDOW_NORMAL);
     cv::setMouseCallback("Original Image", callbackFunc, NULL);
     while (true) {
+
         cv::imshow("Original Image", img);
         cv::waitKey(10);
     }

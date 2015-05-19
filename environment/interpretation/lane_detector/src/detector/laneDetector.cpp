@@ -2,7 +2,7 @@
 #include <ros/package.h>
 #include <laneDetector.hpp>
 #include <tf/transform_broadcaster.h>
-
+#include <vector>
 LaneDetector::LaneDetector(ros::NodeHandle& node_handle) {
     loadParams(node_handle);
 
@@ -45,9 +45,19 @@ void LaneDetector::interpret() {
         gettimeofday(&tval_before, NULL);
     }
 
+    cv::vector<cv::Mat> channels;
+    cv::Mat img_hist_equalized;
+    cvtColor(result, img_hist_equalized, CV_BGR2YCrCb);
+    cv::split(img_hist_equalized,channels);
+    cv::equalizeHist(channels[0], channels[0]);
+    cv::merge(channels,img_hist_equalized);
+    cvtColor(img_hist_equalized, result, CV_YCrCb2BGR);
+    //result=shadowRemoval(result);
 
-    result=shadowRemoval(result);
-    cv::imshow("shadowRemoved",result);
+    if(debug_mode>0)
+    {
+      cv::imshow("shadowRemoved",result);
+    }
     cvtColor(result,result,CV_BGR2HSV);
 
     result = grassRemoval(result);
@@ -64,7 +74,7 @@ void LaneDetector::interpret() {
         cv::imshow(grass_removal_output_window, result);
         cv::waitKey(wait_time);
     }
-    
+
     if (time_functions == 2) {
         gettimeofday(&tval_before, NULL);
     }
@@ -137,7 +147,6 @@ void LaneDetector::setupComms() {
             << "\tSubscriber topic : " << subscribed_topic_name << std::endl
             << "\tPublisher topic  : " << published_topic_name << std::endl;
 }
-
 void LaneDetector::detectLanes(const sensor_msgs::ImageConstPtr& msg) {
     try {
         cv_bridge::CvImagePtr bridge;
@@ -154,7 +163,6 @@ void LaneDetector::detectLanes(const sensor_msgs::ImageConstPtr& msg) {
         cv::imshow(original_image_window, original_image);
         cv::waitKey(wait_time);
     }
-
     interpret();
 }
 
