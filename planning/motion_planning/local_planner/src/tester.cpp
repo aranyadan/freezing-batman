@@ -29,8 +29,8 @@ int main(int argc, char **argv) {
     while (ros::ok()) {
         geometry_msgs::Pose2D target_pose;
 
-        target_pose.x = radius * cos(3.14 * (count % 180) / 180) + 500;
-        target_pose.y = radius * sin(3.14 * (count % 180) / 180) + 100;
+        target_pose.x =  500;
+        target_pose.y = 800 + 100;
         target_pose.theta = (rand() % (360))*(2 * M_PI) / 360;
         target_publisher.publish(target_pose);
         cv::Point pt1, pt2, pt3, pt4;
