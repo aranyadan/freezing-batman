@@ -90,3 +90,5 @@ target_link_libraries(${PROJECT_NAME} ${AGV_FRAMEWORK} ${OpenCV_LIBRARIES} ${cat
 
 add_executable(seed_generator src/a_star_seed/generator.cpp)
 target_link_libraries(seed_generator ${AGV_FRAMEWORK} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+add_executable(local_planner_tester src/tester.cpp)
+target_link_libraries(local_planner_tester ${AGV_FRAMEWORK} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})

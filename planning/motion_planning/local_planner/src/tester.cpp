@@ -49,17 +49,17 @@ int main(int argc, char **argv) {
         cv::line(image, pt2, pt1, cv::Scalar(255, 255, 255), 50, 8, 0);
         cv::line(image, pt4, pt3, cv::Scalar(255, 255, 255), 50, 8, 0);
 
-        //        for (unsigned int i = 0; i < numberofobs; i++) {
-        //            cv::circle(image, cvPoint(rand() % width, 100 + rand() % (height - 200)), minradius + rand() % (maxradius - minradius), cvScalar(255), -1);
-        //        }
-//        cv::namedWindow("view", 1);
-//        cv::imshow("view", image);
-//        cv::waitKey(10);
+        for (unsigned int i = 0; i < numberofobs; i++) {
+           cv::circle(image, cvPoint(rand() % width, 100 + rand() % (height - 200)), minradius + rand() % (maxradius - minradius), cvScalar(255), -1);
+        }
+        cv::namedWindow("view", 1);
+        cv::imshow("view", image);
+        cv::waitKey(1000);
         cv_bridge::CvImage message;
         message.encoding = sensor_msgs::image_encodings::MONO8;
         message.image = image;
         map_publisher.publish(message.toImageMsg());
-        
+
         ros::spinOnce();
         loop_rate.sleep();
     }
